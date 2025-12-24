@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="content-wrapper">
+
+  <!-- Left Sidebar Filters -->
+  <aside class="sidebar">
+    <h3>Filters</h3>
+    <div class="filter-group">
+      <label>Category</label>
+      <select>
+        <option>All</option>
+        <option>Shirts</option>
+        <option>Jackets</option>
+        <option>T-Shirts</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label>Price</label>
+      <input type="range" min="100" max="2000">
+    </div>
+  </aside>
+
+  <!-- Products Grid -->
+  <section class="product-grid">
+    {% for img in images %}
+    <div class="product-card">
+      <a href="{{ url_for('product_page', product_image=img) }}">
+        <div class="image-wrapper">
+          <img src="{{ url_for('static', filename='images/' + img) }}" alt="{{ img }}">
+        </div>
+        <h4>{{ img.split('.')[0]|replace('_',' ') }}</h4>
+        <p>₹ 499</p>
+      </a>
+      <div class="card-buttons">
+        <form method="POST" action="/recommend">
+          <input type="hidden" name="selected_image" value="{{ img }}">
+          <button type="submit">View Similar</button>
+        </form>
+        <form method="POST" action="/cart/add">
+          <input type="hidden" name="product" value="{{ img }}">
+          <button type="submit">Add to Cart</button>
+        </form>
+      </div>
+    </div>
+    {% endfor %}
+  </section>
+</div>
+
+<!-- Top 5 recommendations if clicked -->
+{% if top5 %}
+<hr>
+<h3>Recommended for you</h3>
+<div class="similar-grid">
+  {% for s in top5 %}
+  <a href="{{ url_for('product_page', product_image=s) }}">
+    <img src="{{ url_for('static', filename='images/' + s) }}" alt="{{ s }}">
+  </a>
+  {% endfor %}
+</div>
+{% endif %}
+{% endblock %}
