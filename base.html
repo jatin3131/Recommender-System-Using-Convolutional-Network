@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ title|default("VisualShop") }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<header>
+  <div class="top-bar">
+    <div class="logo">VisualShop</div>
+    <div class="search-bar">
+      <form action="/" method="GET">
+        <input type="text" placeholder="Search products..." name="q">
+        <button type="submit">Search</button>
+      </form>
+    </div>
+    <div class="cart-icon">
+      🛒 <span class="cart-count">{{ session.get('cart_count',0) }}</span>
+    </div>
+  </div>
+</header>
+
+<main class="main-container">
+  {% block content %}{% endblock %}
+</main>
+
+<footer>
+  <p>© {{ current_year }} VisualShop · Privacy · Terms · Contact</p>
+</footer>
+</body>
+</html>
